@@ -19,14 +19,37 @@
       <div class="row">
         <!-- COLUMN 1: Scoreboard-->
         <div class="col-md-4">
-
+          <div id = "play1">
+          <h2>Player 1:</h1>
+            <p><span id= "p1Score"></span></p>
+          </div>
+          <br>
+          <div id = "comp1">
+          <h2>Computer:</h2>
+            <p><span id= "c1Score"></span></p>
+          </div>
         </div>
         <!-- COLUMN 2: Buttons -->
         <div class="col-md-4">
+          <select class="diff" name="Difficulty">
+            <option value="1">Easy</option>
+            <option value="2">Hard</option>
+          </select>
+          <br><br>
+          <button id = "start" class="btn btn-success"  type="button" name="button">Start</button>
+          <br><br>
+          <button id = "roll"class="btn btn-primary"  type="button" name="button">ROLL</button>
+          <br><br>
+          <button id = "hold" class="btn btn-danger"  type="button" name="button">HOLD</button>
 
         </div>
         <!-- COLUMN 3: Roll Space -->
         <div class="col-md-4">
+          <div class= "card">
+            <div class= "card-body">
+              <p><span id = "turnScore"></span></p>
+            </div>
+          </div>
 
         </div>
       </div>
