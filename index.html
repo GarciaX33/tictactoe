@@ -19,19 +19,21 @@
       <div class="row">
         <!-- COLUMN 1: Scoreboard-->
         <div class="col-md-4">
+          <div class="jumbotron">
           <div id = "play1">
-          <h2>Player 1:</h1>
+          <h2><strong>Player 1</strong> Score:</h1>
             <p><span id= "p1Score"></span></p>
           </div>
           <br>
           <div id = "comp1">
-          <h2>Computer:</h2>
+          <h2><strong>Computer</strong> Score:</h2>
             <p><span id= "c1Score"></span></p>
           </div>
         </div>
+        </div>
         <!-- COLUMN 2: Buttons -->
         <div class="col-md-4">
-          <select class="diff" name="Difficulty">
+          <select id="difficulty" name="Difficulty">
             <option value="1">Easy</option>
             <option value="2">Hard</option>
           </select>
@@ -47,10 +49,14 @@
         <div class="col-md-4">
           <div class= "card">
             <div class= "card-body">
+              <div id = "turnRoll"></div>
+            </div>
+          </div>
+          <div class= "card">
+            <div class= "card-body">
               <p><span id = "turnScore"></span></p>
             </div>
           </div>
-
         </div>
       </div>
     </div>

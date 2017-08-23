@@ -1,104 +1,144 @@
 // Business Logic
-function Player (initialScore, ) {
-  this.score = initialScore;
-
-};
-function GameTurn() {
-  this.turnScore = 0;
-};
-GameTurn.prototype.endTurn = function(diceRoll){
-  if(diceRoll === 1){
-    this.turnScore = 0;
-    return true;
-  };
-  return false;
-};
-GameTurn.prototype.updateTurnScore = function(diceRoll) {
-  this.turnScore += diceRoll;
+function HumanPlayer() {
+  this.score = 0;
 };
 
-
-Player.prototype.rollDice = function() {
-  return Math.floor((Math.random() * 6) + 1);
-};
-
-GameTurn.prototype.compEasyTurn = function(diceRoll) {
-  if(diceRoll === 1){
-    this.turnScore = 0;
-    i = 2;
-  } else {
-    this.turnScore += diceRoll;
-  }
+HumanPlayer.prototype.updateScore = function(score){
+  this.score += score;
+  $("#p1Score").text(this.score);
 }
 
+function ComputerPlayer(diff) {
+  this.score = 0;
+  this.diff = diff; // 0 or 1
+};
 
-// Jquery Logic
+// "computerTurn" is a PigGameTurn object
+ComputerPlayer.prototype.compEasyMode = function(computerTurn){
+  for(var i = 0; i < 2; i++){
+    if(computerTurn.turn(this.score)){
+      alert('The computer got a 1');
+      break;
+    } else {
+      this.score += (computerTurn.turnScore);
+      computerTurn.turnScore = 0;
+      $("#c1Score").text(this.score);
+    }
+  }
+};
+// ComputerPlayer.prototype.compHardMode(computerTurn){
+//   // if(diceRoll === 1){
+//   //   this.turnScore = 0;
+//   //   return false;
+//   // } else {
+//   //   this.turnScore += diceRoll;
+//   //   return true;
+//   // }
+// }
+
+function PigGameTurn(score) {
+  this.turnScore = 0;
+}
+
+PigGameTurn.prototype.turn = function(aPlayersScore) {
+  $("#turnScore").text(this.turnScore);
+  // Roll A Dice
+  var turnRoll = this.rollDice();
+  // Check for a #1
+  if(this.oneCheck(turnRoll)){
+    $("#turnRoll").text("You got a 1 :(");
+    return true;
+  };
+  // Update the aPTG
+  this.updateTurnScore(turnRoll);
+  // Check for a win
+  this.checkForWin(aPlayersScore);
+
+  $("#turnScore").text(this.turnScore);
+  return false;
+}
+
+PigGameTurn.prototype.rollDice = function() {
+  return Math.floor((Math.random() * 6) + 1);
+};
+PigGameTurn.prototype.oneCheck = function(roll) {
+  if(roll === 1){
+    // Turn is over and you get no points
+    this.turnScore = 0;
+    return true;
+  }
+  return false;
+};
+PigGameTurn.prototype.updateTurnScore = function(roll) {
+  this.turnScore += roll;
+  $("#turnRoll").text(roll);
+};
+PigGameTurn.prototype.checkForWin = function(aPlayersScore) {
+  if((aPlayersScore + this.turnScore) >= 100){
+    // Preform win condition
+    $("#start").attr('disabled',false);
+    // Disables roll and hold buttons until game is REstarted
+    $("#roll").attr('disabled',true);
+    $("#hold").attr('disabled',true);
+
+    alert("You win!");
+  } else {
+    // Otherwise keep playing
+  }
+};
+
+// Frontend Logic
 $(document).ready(function() {
+  // Disables roll and hold buttons until game is started
   $("#roll").attr('disabled',true);
   $("#hold").attr('disabled',true);
+
+  // Waits to start a game until the start button is clicked
   $("#start").click(function() {
+    // Disables the start button once the game has already been "started"
     $(this).attr('disabled',true);
+
+    // Enables the roll button so that the player may "roll"
     $("#roll").attr('disabled', false);
-    var player1 = new Player(0);
-    var comp1 = new Player(0);
-    var playerTurn = new GameTurn();
-    var compTurn = new GameTurn();
+
+    // Figure out what difficulty the player wants to play at
+    var compDifficulty = parseInt($("#difficulty option:selected").val());
+    var comp1 = new ComputerPlayer(compDifficulty);
+    var player1 = new HumanPlayer();
 
     // Initializes Scores
     $("#p1Score").text(player1.score);
     $("#c1Score").text(comp1.score);
-    $("#turnScore").text(playerTurn.turnScore);
+    $("#turnRoll").text("0");
+    $("#turnScore").text("0");
 
+    var playerTurn = new PigGameTurn();
+    var compTurn = new PigGameTurn();
     $("#roll").click(function() {
+      // Enables the hold button
       $("#hold").attr('disabled',false);
-      var turnRoll = player1.rollDice();
-      if(playerTurn.endTurn(turnRoll)){
+      if(playerTurn.turn(player1.score)){
+        // Disables hold button
         $("#hold").attr('disabled',true);
-        $("#turnScore").text("You Rolled a 1 :(");
-        for(var i=0; i < 2; i++){
-          var turnRoll = comp1.rollDice();
-          compTurn.compEasyTurn(turnRoll);
+        alert("Computers Turn bc you got a 1.")
+        if(comp1.diff === 1){
+          comp1.compEasyMode(compTurn);
         }
-        comp1.score += compTurn.turnScore;
-        compTurn.turnScore = 0;
-        $("#c1Score").text(comp1.score);
-        if(comp1.score >= 100){
-         alert("You lose....");
-        }
-      } else {
-        playerTurn.updateTurnScore(turnRoll);
-        $("#turnScore").text(playerTurn.turnScore);
-      }
-    });
-    $("#hold").click(function() {
-      $(this).attr('disabled','disabled');
-      player1.score += playerTurn.turnScore;
-      playerTurn.turnScore = 0;
-      $("#turnScore").text(playerTurn.turnScore);
-
-      // Check for a player win
-      if(player1.score >= 100){
-        alert("You win!");
       };
+    });
 
-      $("#p1Score").text(player1.score);
+    $("#hold").click(function() {
+      // The hold button disables itself
+      $(this).attr('disabled','disabled');
 
-      // CHECKS TO SEE IF DIFFICULTY IS SET TO EASY OR HARD
-      // if(comp1.difficulty === "0"){
-      for(var i=0; i < 2; i++){
-        var turnRoll = comp1.rollDice();
-        compTurn.compEasyTurn(turnRoll);
+      // Update the player score and the player's turn score
+      player1.updateScore(playerTurn.turnScore);
+      playerTurn.turnScore = 0;
+
+      if(comp1.diff === 1){
+        alert("Computers Turn bc you pressed hold.")
+        comp1.compEasyMode(compTurn);
       }
-      comp1.score += compTurn.turnScore;
-      compTurn.turnScore = 0;
-      $("#c1Score").text(comp1.score);
-      // }
-      // Check for computer win
-      if(comp1.score >= 100){
-       alert("You lose....");
-      }
-
     });
   });
-
 });
