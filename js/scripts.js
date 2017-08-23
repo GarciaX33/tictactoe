@@ -27,29 +27,55 @@ Player.prototype.rollDice = function() {
 
 // Jquery Logic
 $(document).ready(function() {
+  $("#roll").attr('disabled',true);
+  $("#hold").attr('disabled',true);
   $("#start").click(function() {
+    $(this).attr('disabled',true);
+    $("#roll").attr('disabled', false);
     var player1 = new Player(0);
     var comp1 = new Player(0);
+    var playerTurn = new GameTurn();
+
+    // Initializes Scores
     $("#p1Score").text(player1.score);
     $("#c1Score").text(comp1.score);
-    var playerTurn = new GameTurn();
     $("#turnScore").text(playerTurn.turnScore);
+
     $("#roll").click(function() {
+      $("#hold").attr('disabled',false);
       var turnRoll = player1.rollDice();
-      alert(turnRoll);
       if(playerTurn.endTurn(turnRoll)){
         $("#turnScore").text("You Rolled a 1 :(");
-        //$("#turnScore").text(playerTurn.turnScore);
       } else {
         playerTurn.updateTurnScore(turnRoll);
         $("#turnScore").text(playerTurn.turnScore);
       }
     });
     $("#hold").click(function() {
+      $(this).attr('disabled','disabled');
       player1.score += playerTurn.turnScore;
-      $("#p1Score").text(player1.score);
-    });
 
+      // Check for a player win
+      if(player1.score >= 100){
+        alert("You win!");
+      };
+
+      $("#p1Score").text(player1.score);
+      for(var i=0; i < 2; i++){
+        var computerRoll = comp1.rollDice();
+        if(computerRoll === 1){
+          comp1.score += 0;
+          i = 2;
+        } else {
+          comp1.score += computerRoll;
+        }
+      }
+      // Check for computer win
+      if(comp1.score >= 100){
+       alert("You lose....");
+      }
+      $("#c1Score").text(comp1.score);
+    });
   });
 
 });
