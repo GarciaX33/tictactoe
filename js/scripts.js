@@ -17,7 +17,7 @@ function ComputerPlayer(diff) {
 ComputerPlayer.prototype.compEasyMode = function(computerTurn){
   for(var i = 0; i < 2; i++){
     if(computerTurn.turn(this.score)){
-      alert('The computer got a 1');
+      alert ("comp got 1");
       break;
     } else {
       this.score += (computerTurn.turnScore);
@@ -26,15 +26,22 @@ ComputerPlayer.prototype.compEasyMode = function(computerTurn){
     }
   }
 };
-// ComputerPlayer.prototype.compHardMode(computerTurn){
-//   // if(diceRoll === 1){
-//   //   this.turnScore = 0;
-//   //   return false;
-//   // } else {
-//   //   this.turnScore += diceRoll;
-//   //   return true;
-//   // }
-// }
+ComputerPlayer.prototype.compHardMode = function(computerTurn){
+  // alert("Hard Mode");
+  // alert("turn score initial: " + computerTurn.turnScore);
+  // var exit = false;
+  // computerTurn.turnScore = 0;
+  // while(computerTurn.turnScore <= 16 || exit === false){
+  //   alert("turn score: " + computerTurn.turnScore);
+  //   if(computerTurn.turn(this.score)){
+  //     alert('The computer got a 1');
+  //     computerTurn.turnScore = 0;
+  //     exit = true;
+  //   }
+  // };
+  // this.score += (computerTurn.turnScore);
+  // $("#c1Score").text(this.score);
+}
 
 function PigGameTurn(score) {
   this.turnScore = 0;
@@ -51,6 +58,8 @@ PigGameTurn.prototype.turn = function(aPlayersScore) {
   };
   // Update the aPTG
   this.updateTurnScore(turnRoll);
+
+  $("#turnScore").text(this.turnScore);
   // Check for a win
   this.checkForWin(aPlayersScore);
 
@@ -64,6 +73,7 @@ PigGameTurn.prototype.rollDice = function() {
 PigGameTurn.prototype.oneCheck = function(roll) {
   if(roll === 1){
     // Turn is over and you get no points
+    alert("u got 1");
     this.turnScore = 0;
     return true;
   }
@@ -75,6 +85,8 @@ PigGameTurn.prototype.updateTurnScore = function(roll) {
 };
 PigGameTurn.prototype.checkForWin = function(aPlayersScore) {
   if((aPlayersScore + this.turnScore) >= 100){
+    // If a win reset turnScore to 0
+    this.turnScore = 0;
     // Preform win condition
     $("#start").attr('disabled',false);
     // Disables roll and hold buttons until game is REstarted
@@ -103,7 +115,9 @@ $(document).ready(function() {
 
     // Figure out what difficulty the player wants to play at
     var compDifficulty = parseInt($("#difficulty option:selected").val());
+    alert(compDifficulty);
     var comp1 = new ComputerPlayer(compDifficulty);
+    alert(comp1.diff);
     var player1 = new HumanPlayer();
 
     // Initializes Scores
@@ -117,12 +131,14 @@ $(document).ready(function() {
     $("#roll").click(function() {
       // Enables the hold button
       $("#hold").attr('disabled',false);
+
       if(playerTurn.turn(player1.score)){
         // Disables hold button
         $("#hold").attr('disabled',true);
-        alert("Computers Turn bc you got a 1.")
         if(comp1.diff === 1){
           comp1.compEasyMode(compTurn);
+        } else {
+          comp1.compHardMode(compTurn);
         }
       };
     });
@@ -136,8 +152,9 @@ $(document).ready(function() {
       playerTurn.turnScore = 0;
 
       if(comp1.diff === 1){
-        alert("Computers Turn bc you pressed hold.")
         comp1.compEasyMode(compTurn);
+      } else {
+        comp1.compHardMode(compTurn);
       }
     });
   });
