@@ -12,49 +12,54 @@
       <div class="row">
         <div class="col-md-12">
           <div class="jumbotron">
-            <h1>Pig Dice</h1>
+            <h1 class="display-3">Pig Dice</h1>
+            <hr class="my-4">
+            <p>Face an A.I. Player in this Classic Game!</p>
           </div>
         </div>
       </div>
       <div class="row">
         <!-- COLUMN 1: Scoreboard-->
         <div class="col-md-4">
-          <div class="jumbotron">
-          <div id = "play1">
-          <h2><strong>Player 1</strong> Score:</h1>
-            <p><span id= "p1Score"></span></p>
-          </div>
-          <br>
-          <div id = "comp1">
-          <h2><strong>Computer</strong> Score:</h2>
-            <p><span id= "c1Score"></span></p>
-          </div>
-        </div>
-        </div>
-        <!-- COLUMN 2: Buttons -->
-        <div class="col-md-4">
-          <select id="difficulty" name="Difficulty">
-            <option value="1">Easy</option>
-            <option value="2">Hard</option>
-          </select>
-          <br><br>
-          <button id = "start" class="btn btn-success"  type="button" name="button">Start</button>
-          <br><br>
-          <button id = "roll"class="btn btn-primary"  type="button" name="button">ROLL</button>
-          <br><br>
-          <button id = "hold" class="btn btn-danger"  type="button" name="button">HOLD</button>
-
-        </div>
-        <!-- COLUMN 3: Roll Space -->
-        <div class="col-md-4">
-          <div class= "card">
-            <div class= "card-body">
-              <div id = "turnRoll"></div>
+          <div class="card border-primary mb-3">
+            <div class="card-body text-primary">
+              <h4 class="card-title">Player 1 Score:</h4>
+              <p class="card-text"><span id="p1Score"></span></p>
+              <h4 class="card-title">Computer Score:</h4>
+              <p class="card-text"><span id="c1Score"></span></p>
             </div>
           </div>
-          <div class= "card">
-            <div class= "card-body">
-              <p><span id = "turnScore"></span></p>
+        </div>
+        <!-- COLUMN 2: Buttons -->
+        <div class="col-md-2">
+          <div class="row">
+            <div class="form-group">
+              <label for="difficulty">Choose Difficulty</label>
+              <select class="form-control" id="difficulty">
+                <option value="1">Easy</option>
+                <option value="2">Hard</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <button id="start" class="btn btn-success btn-block" type="button">Start</button>
+          </div>
+          <div class="row">
+            <button id="roll"class="btn btn-primary btn-block" type="button">ROLL</button>
+          </div>
+          <div class="row">
+            <button id="hold" class="btn btn-danger btn-block" type="button">HOLD</button>
+          </div>
+        </div>
+        <!-- COLUMN 3: Roll Space -->
+        <div class="col-md-6">
+          <div class="card text-white bg-primary mb-3">
+            <div class="card-header"><h3 id="turn">Press Start To Play!</h3></div>
+            <div class="card-body">
+              <h4 class="card-title">Roll(s):</h4>
+              <p class="card-text"><span id="turnRoll"></span></p>
+              <h4 class="card-title">Turn Score:</h4>
+              <p class="card-text"><span id="turnScore"></span></p>
             </div>
           </div>
         </div>

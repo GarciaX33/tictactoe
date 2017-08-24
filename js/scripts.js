@@ -1,4 +1,7 @@
-// Business Logic
+// Business Logic CODE TO REFRESH: location.reload();
+/*************************************************************************
+The Human Player Object
+**************************************************************************/
 function HumanPlayer() {
   this.score = 0;
 };
@@ -7,7 +10,9 @@ HumanPlayer.prototype.updateScore = function(score){
   this.score += score;
   $("#p1Score").text(this.score);
 }
-
+/*************************************************************************
+The Computer Player Object
+**************************************************************************/
 function ComputerPlayer(diff) {
   this.score = 0;
   this.diff = diff; // 0 or 1
@@ -17,14 +22,13 @@ function ComputerPlayer(diff) {
 ComputerPlayer.prototype.compEasyMode = function(computerTurn){
   for(var i = 0; i < 2; i++){
     if(computerTurn.turn(this.score)){
-      alert ("comp got 1");
+      $("#turnRoll").text("The computer got a 1!");
       break;
-    } else {
-      this.score += (computerTurn.turnScore);
-      computerTurn.turnScore = 0;
-      $("#c1Score").text(this.score);
     }
   }
+
+  this.score += (computerTurn.turnScore);
+  $("#turnScore").text("Computer Rolled: " + computerTurn.turnScore);
 };
 ComputerPlayer.prototype.compHardMode = function(computerTurn){
   // alert("Hard Mode");
@@ -42,28 +46,25 @@ ComputerPlayer.prototype.compHardMode = function(computerTurn){
   // this.score += (computerTurn.turnScore);
   // $("#c1Score").text(this.score);
 }
-
+/**************************************************************************
+The Game Turn Object
+**************************************************************************/
 function PigGameTurn(score) {
   this.turnScore = 0;
 }
 
 PigGameTurn.prototype.turn = function(aPlayersScore) {
-  $("#turnScore").text(this.turnScore);
   // Roll A Dice
   var turnRoll = this.rollDice();
   // Check for a #1
   if(this.oneCheck(turnRoll)){
-    $("#turnRoll").text("You got a 1 :(");
     return true;
   };
   // Update the aPTG
   this.updateTurnScore(turnRoll);
-
-  $("#turnScore").text(this.turnScore);
   // Check for a win
   this.checkForWin(aPlayersScore);
 
-  $("#turnScore").text(this.turnScore);
   return false;
 }
 
@@ -73,7 +74,6 @@ PigGameTurn.prototype.rollDice = function() {
 PigGameTurn.prototype.oneCheck = function(roll) {
   if(roll === 1){
     // Turn is over and you get no points
-    alert("u got 1");
     this.turnScore = 0;
     return true;
   }
@@ -82,11 +82,10 @@ PigGameTurn.prototype.oneCheck = function(roll) {
 PigGameTurn.prototype.updateTurnScore = function(roll) {
   this.turnScore += roll;
   $("#turnRoll").text(roll);
+  $("#turnScore").text(this.turnScore);
 };
 PigGameTurn.prototype.checkForWin = function(aPlayersScore) {
   if((aPlayersScore + this.turnScore) >= 100){
-    // If a win reset turnScore to 0
-    this.turnScore = 0;
     // Preform win condition
     $("#start").attr('disabled',false);
     // Disables roll and hold buttons until game is REstarted
@@ -94,9 +93,8 @@ PigGameTurn.prototype.checkForWin = function(aPlayersScore) {
     $("#hold").attr('disabled',true);
 
     alert("You win!");
-  } else {
-    // Otherwise keep playing
   }
+  // Otherwise keep playing
 };
 
 // Frontend Logic
@@ -106,7 +104,10 @@ $(document).ready(function() {
   $("#hold").attr('disabled',true);
 
   // Waits to start a game until the start button is clicked
+  /**************************************************************************/
   $("#start").click(function() {
+  /**************************************************************************/
+    $("#turn").text("Player's Turn");
     // Disables the start button once the game has already been "started"
     $(this).attr('disabled',true);
 
@@ -115,9 +116,7 @@ $(document).ready(function() {
 
     // Figure out what difficulty the player wants to play at
     var compDifficulty = parseInt($("#difficulty option:selected").val());
-    alert(compDifficulty);
     var comp1 = new ComputerPlayer(compDifficulty);
-    alert(comp1.diff);
     var player1 = new HumanPlayer();
 
     // Initializes Scores
@@ -128,22 +127,33 @@ $(document).ready(function() {
 
     var playerTurn = new PigGameTurn();
     var compTurn = new PigGameTurn();
+
+
+    /**************************************************************************/
     $("#roll").click(function() {
+    /**************************************************************************/
       // Enables the hold button
       $("#hold").attr('disabled',false);
 
+      // Returns true if a "1" is rolled and false if it runs as expected
       if(playerTurn.turn(player1.score)){
+        alert("You got a 1 :(");
+        $("#turn").text("Computer's Turn");
         // Disables hold button
         $("#hold").attr('disabled',true);
         if(comp1.diff === 1){
           comp1.compEasyMode(compTurn);
-        } else {
+        } else if(comp.diff === 2) {
           comp1.compHardMode(compTurn);
         }
+        $("#c1Score").text(comp1.score);
+        compTurn.turnScore = 0;
       };
     });
-
+    /**************************************************************************/
     $("#hold").click(function() {
+    /**************************************************************************/
+      $("#turn").text("Computer's Turn");
       // The hold button disables itself
       $(this).attr('disabled','disabled');
 
@@ -153,9 +163,13 @@ $(document).ready(function() {
 
       if(comp1.diff === 1){
         comp1.compEasyMode(compTurn);
-      } else {
+      } else if(comp.diff === 2) {
         comp1.compHardMode(compTurn);
       }
+      // Update scores
+      $("#c1Score").text(comp1.score);
+      compTurn.turnScore = 0;
     });
+      $("#turn").text("Player's Turn");
   });
 });
