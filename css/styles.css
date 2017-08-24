@@ -6,9 +6,15 @@
   width: 100%;
 }
 .card {
-  margin-left: 14px;
+  /*margin-left: 14px;*/
+  margin-top: 1em
 }
 .jumbotron {
   padding-top: 1.75em;
   padding-bottom: 1.75em;
+  margin-bottom: 0px;
+}
+#row-center {
+  padding-left: 0px;
+  padding-right: 0px;
 }
