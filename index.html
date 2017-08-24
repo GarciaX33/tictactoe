@@ -3,65 +3,71 @@
   <head>
     <link href="css/bootstrap.css" rel="stylesheet" type="text/css">
     <link href="css/styles.css" rel="stylesheet" type="text/css">
-    <link href="img/pig.ico" rel="icon" type="image/ico">
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <!-- <link href="img/pig.ico" rel="icon" type="image/ico"> -->
     <script src="js/jquery-3.2.1.js"></script>
     <script src="js/scripts.js"></script>
-    <title>Pig Dice</title>
+    <title>Tic Tac Toe</title>
   </head>
   <body>
     <div class="container">
       <div class="row">
-        <div class="col-sm-12">
+        <div class="col-12">
           <div class="jumbotron">
-            <h1 class="display-3">Pig Dice</h1>
-            <hr class="my-4">
-            <p>Face an A.I. Player in this Classic Game!</p>
+              <h1>A Superior Tic Tac Toe Game</h1>
           </div>
         </div>
       </div>
-      <div class="row">
-        <!-- COLUMN 1: Scoreboard-->
-        <div class="col-sm-4">
-          <div class="card text-white bg-primary mb-3">
-              <div class="card-header"><h3>Scoreboard</h3></div>
-            <div class="card-body">
-              <h4 class="card-title">Player 1 Score:</h4>
-              <p class="card-text"><span id="p1Score"></span></p>
-              <h4 class="card-title">Computer Score:</h4>
-              <p class="card-text"><span id="c1Score"></span></p>
+
+        <div class="row bottom-border">
+          <div class="col-4 right-border">
+            <div value="1" class="card spots">
+              <!-- <h1>sp1</h1> -->
+              <p class="align-text-bottom mark-text"></p>
+            </div>
+          </div>
+          <div class="col-4 right-border">
+            <div id = "space2" class="card spots">
+              <p class="align-text-bottom mark-text"></p>
+            </div>
+          </div>
+          <div class="col-4">
+            <div value="3" class="card spots">
+              <p class="align-text-bottom mark-text"></p>
             </div>
           </div>
         </div>
-        <!-- COLUMN 2: Buttons -->
-        <div class="col-sm-2">
-          <div class="row">
-            <div class="form-group">
-              <label for="difficulty">Choose Difficulty</label>
-              <select class="form-control" id="difficulty">
-                <option value="1">Easy</option>
-                <option value="2">Hard</option>
-              </select>
+        <div id ="ctrow" class="row bottom-border">
+          <div class="col-4 right-border">
+            <div value="4" class="card spots">
+              <p class="align-text-bottom mark-text"></p>
             </div>
           </div>
-          <div class="row">
-            <button id="start" class="btn btn-success btn-block" type="button">Start</button>
+          <div class="col-4 right-border">
+            <div id = "space5" class="card spots">
+              <p class="align-text-bottom mark-text"></p>
+            </div>
           </div>
-          <div class="row">
-            <button id="roll"class="btn btn-primary btn-block" type="button">ROLL</button>
-          </div>
-          <div class="row">
-            <button id="hold" class="btn btn-danger btn-block" type="button">HOLD</button>
+          <div class="col-4">
+            <div id = "space6" class="card spots">
+              <p class="align-text-bottom mark-text"></p>
+            </div>
           </div>
         </div>
-        <!-- COLUMN 3: Roll Space -->
-        <div class="col-sm-6">
-          <div class="card text-white bg-primary mb-3">
-            <div class="card-header"><h3 id="turn">Press Start To Play!</h3></div>
-            <div class="card-body">
-              <h4 class="card-title">Last Roll:</h4>
-              <p class="card-text"><span id="turnRoll"></span></p>
-              <h4 class="card-title">Turn Score:</h4>
-              <p class="card-text"><span id="turnScore"></span></p>
+        <div class="row">
+          <div class="col-4 right-border">
+            <div id = "space7" class="card spots">
+              <p class="align-text-bottom mark-text"></p>
+            </div>
+          </div>
+          <div class="col-4 right-border">
+            <div id ="space8" class="card spots">
+              <p class="align-text-bottom mark-text"></p>
+            </div>
+          </div>
+          <div class="col-4">
+            <div id ="space9" class="card spots">
+              <p class="align-text-bottom mark-text"></p>
             </div>
           </div>
         </div>
