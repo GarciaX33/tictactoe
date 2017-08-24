@@ -8,3 +8,7 @@
 .card {
   margin-left: 14px;
 }
+.jumbotron {
+  padding-top: 1.75em;
+  padding-bottom: 1.75em;
+}
